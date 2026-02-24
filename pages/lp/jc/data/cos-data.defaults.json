@@ -1,0 +1,252 @@
+{
+  "merchants": [
+    {
+      "domain": "expedia.com",
+      "displayName": "Expedia",
+      "dealCount": 81,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "Up to 19.7%",
+      "cashbackType": "cut",
+      "cashbackCategories": [
+        {
+          "name": "Hotels",
+          "rate": "1.5%"
+        },
+        {
+          "name": "Car Rentals",
+          "rate": "0.5%"
+        }
+      ],
+      "category": "travel"
+    },
+    {
+      "domain": "hotels.com",
+      "displayName": "Hotels.com",
+      "dealCount": 33,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "1%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "travel"
+    },
+    {
+      "domain": "southwest.com",
+      "displayName": "Southwest Airlines",
+      "dealCount": 14,
+      "deals": [],
+      "couponCodes": [
+        {
+          "code": "20BUCKS",
+          "description": "$20 off select flights"
+        },
+        {
+          "code": "25OFFSUN",
+          "description": "25% off Sun Country flights"
+        }
+      ],
+      "cashbackRate": "0.5%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "travel"
+    },
+    {
+      "domain": "united.com",
+      "displayName": "United Airlines",
+      "dealCount": 26,
+      "deals": [],
+      "couponCodes": [
+        {
+          "code": "BLKFRI25A",
+          "description": "Black Friday deal"
+        }
+      ],
+      "cashbackRate": null,
+      "cashbackType": null,
+      "cashbackCategories": [],
+      "category": "travel"
+    },
+    {
+      "domain": "priceline.com",
+      "displayName": "Priceline",
+      "dealCount": 6,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "Up to 24.4%",
+      "cashbackType": "cut",
+      "cashbackCategories": [
+        {
+          "name": "Hotels",
+          "rate": "2%"
+        },
+        {
+          "name": "Flights",
+          "rate": "0.5%"
+        }
+      ],
+      "category": "travel"
+    },
+    {
+      "domain": "hilton.com",
+      "displayName": "Hilton",
+      "dealCount": 11,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "Up to 16.8%",
+      "cashbackType": "cut",
+      "cashbackCategories": [
+        {
+          "name": "Hotel Stays",
+          "rate": "1%"
+        }
+      ],
+      "category": "travel"
+    },
+    {
+      "domain": "marriott.com",
+      "displayName": "Marriott",
+      "dealCount": 4,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "1%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "travel"
+    },
+    {
+      "domain": "vrbo.com",
+      "displayName": "Vrbo",
+      "dealCount": 22,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "1%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "travel"
+    },
+    {
+      "domain": "booking.com",
+      "displayName": "Booking.com",
+      "dealCount": 4,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "1%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "travel"
+    },
+    {
+      "domain": "amazon.com",
+      "displayName": "Amazon",
+      "dealCount": 100,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": null,
+      "cashbackType": null,
+      "cashbackCategories": [],
+      "category": "retail"
+    },
+    {
+      "domain": "target.com",
+      "displayName": "Target",
+      "dealCount": 53,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "0.5%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "retail"
+    },
+    {
+      "domain": "nike.com",
+      "displayName": "Nike",
+      "dealCount": 91,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "2%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "retail"
+    },
+    {
+      "domain": "walmart.com",
+      "displayName": "Walmart",
+      "dealCount": 15,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "0.5%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "retail"
+    },
+    {
+      "domain": "bestbuy.com",
+      "displayName": "Best Buy",
+      "dealCount": 25,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "0.5%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "retail"
+    },
+    {
+      "domain": "macys.com",
+      "displayName": "Macy's",
+      "dealCount": 88,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "Up to 8%",
+      "cashbackType": "cut",
+      "cashbackCategories": [
+        { "name": "General", "rate": "8%" },
+        { "name": "Shoes & Accessories", "rate": "1%" }
+      ],
+      "category": "retail"
+    },
+    {
+      "domain": "adidas.com",
+      "displayName": "Adidas",
+      "dealCount": 29,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "Up to 2%",
+      "cashbackType": "cut",
+      "cashbackCategories": [
+        { "name": "General", "rate": "2%" }
+      ],
+      "category": "retail"
+    },
+    {
+      "domain": "sephora.com",
+      "displayName": "Sephora",
+      "dealCount": 10,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "Up to 1.5%",
+      "cashbackType": "cut",
+      "cashbackCategories": [
+        { "name": "General", "rate": "1.5%" }
+      ],
+      "category": "retail"
+    },
+    {
+      "domain": "homedepot.com",
+      "displayName": "The Home Depot",
+      "dealCount": 93,
+      "deals": [],
+      "couponCodes": [],
+      "cashbackRate": "0.5%",
+      "cashbackType": "percentage",
+      "cashbackCategories": [],
+      "category": "retail"
+    }
+  ],
+  "chromeStoreStats": {
+    "userCount": "11,000,000",
+    "ratingValue": "4.7",
+    "ratingCount": "17,200"
+  },
+  "fetchedAt": "2026-02-19T00:00:00.000Z"
+}

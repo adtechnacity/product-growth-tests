@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-cta-blue: #214CE5;
+  --color-cta-hover: #133BCC;
+  --color-headline: #37465A;
+  --color-divider: #A3BAC6;
+  --color-disclaimer: #444444;
+  --font-sans: var(--font-open-sans);
+  --z-toast: 40;
+  --z-quiz: 50;
+}
+
+body {
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #214CE5;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1;
+  padding: 1.125rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(33, 76, 229, 0.35);
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  max-width: 23.5625rem;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #133BCC;
+  box-shadow: 0 4px 12px rgba(33, 76, 229, 0.5);
+}
+
+.btn-sticky {
+  max-width: none;
+  border-radius: 0;
+  font-size: 1.25rem;
+  padding: 0.875rem 1.5rem;
+}
+
+/* Baseline page: match original live LP button styling */
+.btn-baseline {
+  font-size: 1.25rem;
+  line-height: 120%;
+  height: 3.5rem;
+  padding: 0 2rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(1, 1, 1, 0.5);
+}
+
+@media (min-width: 768px) {
+  .btn-baseline {
+    height: 3.6875rem;
+  }
+}
+
+.btn-baseline:hover {
+  box-shadow: 0 1px 3px rgba(1, 1, 1, 0.5);
+}
+
