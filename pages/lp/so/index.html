@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free browser extension that finds hidden Amazon deals and automatically applies coupon codes. Used by 11M+ shoppers. Rated 4.7 stars.">
+  <meta property="og:title" content="If You Pay for Amazon Prime, You Need to Know This">
+  <meta property="og:description" content="Free savings tool finds deals Amazon doesn't show you. Used by 11 million+ shoppers.">
+  <meta property="og:type" content="website">
+  <title>Capital One Shopping | Free Hidden Deal Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ========== Reset & Base ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #fff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #111827;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+      text-wrap: pretty;
+    }
+
+    /* ========== Animations ========== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      15% { transform: rotate(-3deg); }
+      30% { transform: rotate(3deg); }
+      45% { transform: rotate(-2deg); }
+      60% { transform: rotate(2deg); }
+      75% { transform: rotate(-1deg); }
+    }
+
+    /* ========== CTA Button ========== */
+    .btn {
+      display: inline-block;
+      background: #16a34a;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      padding: 16px 40px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .btn:hover {
+      background: #15803d;
+      transform: translateY(-1px);
+    }
+
+    /* ========== Store Card Hover ========== */
+    .store-card {
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .store-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    /* ========== Review Card Hover ========== */
+    .review-card {
+      transition: transform 0.15s ease;
+    }
+    .review-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ========== Scroll Animate ========== */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .animate-on-scroll.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========== FAQ Toggle ========== */
+    .faq-toggle-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #374151;
+      font-size: 22px;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .faq-item.open .faq-toggle-icon {
+      background: #16a34a;
+      color: #fff;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px !important; }
+      .hero-section { padding: 48px 20px 40px !important; }
+      .hero-headline { font-size: 36px !important; }
+      .hero-sub { font-size: 18px !important; }
+      .hero-columns { flex-direction: column !important; }
+      .hero-columns > div:first-child { width: 100% !important; max-width: 380px; margin: 0 auto; }
+      .hero-columns > div:last-child { text-align: center !important; }
+      .hero-proof-strip { flex-direction: column; gap: 20px !important; }
+      .section-pad { padding-left: 20px !important; padding-right: 20px !important; }
+      .comparison-cards { flex-direction: column !important; }
+      .comparison-card-inner { flex-direction: column !important; text-align: center; }
+      .comparison-card-inner > div { min-width: unset !important; }
+      .stores-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+      .steps-grid { grid-template-columns: 1fr !important; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .reviews-grid { grid-template-columns: 1fr !important; }
+      .section-h2 { font-size: 30px !important; }
+      .stats-h2 { font-size: 28px !important; }
+      .final-h2 { font-size: 32px !important; }
+      .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;height:68px;animation:slideDown 0.3s ease;">
+  <div class="nav-inner" style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1160px;padding:0 48px;">
+    <div style="display:flex;align-items:center;">
+      <img src="images/cos-logo.svg" alt="Capital One Shopping" style="height:32px;">
+    </div>
+    <a class="btn" href="https://placeholder-affiliate-link.com" style="font-size:15px;padding:12px 28px;">Add Free Savings Tool</a>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero-section" style="background:#fff;padding:48px 48px 48px;">
+  <div style="max-width:1060px;margin:0 auto;animation:fadeUp 0.6s ease both;">
+
+    <!-- Headline -->
+    <h1 class="hero-headline" style="font-size:48px;font-weight:900;color:#111827;line-height:1.1;letter-spacing:-0.03em;margin-bottom:20px;text-align:center;">
+      There's a simple way to<br>pay less on Amazon.
+    </h1>
+
+    <!-- Bridge copy -->
+    <p class="hero-sub" style="font-size:20px;color:#374151;line-height:1.7;font-weight:500;max-width:680px;margin:0 auto 36px;text-align:center;">
+      Amazon shows you one price, but it's often cheaper elsewhere. A free tool called <strong style="color:#111827;">Capital One Shopping</strong> finds lower prices and coupons automatically. 11 million people already use it.
+    </p>
+
+    <!-- Keurig proof -->
+    <div style="background:#f9fafb;border-radius:20px;padding:36px 40px;max-width:900px;margin:0 auto;border:1px solid #e5e7eb;">
+      <div class="hero-columns" style="display:flex;align-items:center;gap:48px;">
+
+        <!-- Left: Keurig Card -->
+        <div style="flex:0 0 auto;width:420px;">
+          <div style="position:relative;background:#fff;border-radius:16px;border:1px solid #e5e7eb;padding:32px 36px 28px;box-shadow:0 1px 6px rgba(0,0,0,0.04);text-align:center;">
+            <div style="position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:#CC0C39;color:#fff;font-size:17px;font-weight:800;padding:7px 20px;border-radius:8px;white-space:nowrap;letter-spacing:-0.01em;">Save $196.37</div>
+            <!-- Product -->
+            <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:24px;">
+              <div style="font-size:19px;font-weight:700;color:#111827;line-height:1.3;margin-top:10px;margin-bottom:14px;">Keurig K-Caf&eacute; Coffee Maker</div>
+              <div style="width:200px;height:200px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                <img src="images/keurig.png" alt="Keurig K-Cafe Coffee Maker" style="max-height:180px;max-width:180px;object-fit:contain;">
+              </div>
+            </div>
+            <!-- Prices -->
+            <div style="display:flex;align-items:center;justify-content:center;gap:20px;">
+              <div style="text-align:center;">
+                <div style="font-size:14px;font-weight:600;color:#9ca3af;margin-bottom:4px;">Amazon</div>
+                <div style="font-size:28px;font-weight:800;color:#d1d5db;text-decoration:line-through;letter-spacing:-0.02em;">$326.36</div>
+              </div>
+              <div style="font-size:24px;color:#d1d5db;">&#8594;</div>
+              <div style="text-align:center;">
+                <div style="font-size:14px;font-weight:600;color:#6b7280;margin-bottom:4px;">Keurig.com</div>
+                <div style="font-size:28px;font-weight:800;color:#111827;letter-spacing:-0.02em;">$129.99</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Text + CTA -->
+        <div style="flex:1;text-align:left;">
+          <p style="font-size:13px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Real example found by this tool</p>
+          <p style="font-size:18px;color:#374151;line-height:1.7;font-weight:500;">
+            This Keurig is the same product, same model, same specs, just <strong style="color:#CC0C39;">$196 less</strong> when bought from Keurig.com instead of Amazon. <strong style="color:#111827;">Without this tool, you'd never know.</strong>
+          </p>
+          <p style="font-size:18px;color:#374151;line-height:1.7;font-weight:500;margin-top:16px;">
+            It finds these differences automatically while you browse. No searching, no clipping coupons, nothing to remember.
+          </p>
+          <div style="margin-top:24px;text-align:center;">
+            <a class="btn" href="https://placeholder-affiliate-link.com" style="font-size:18px;padding:16px 0;display:block;width:100%;">Add Free Savings Tool</a>
+            <p style="color:#9ca3af;font-size:14px;margin-top:10px;">Backed by Capital One. 100% free.</p>
+          </div>
+        </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== SOCIAL PROOF ========== -->
+<section style="background:#111827;padding:36px 48px;text-align:center;">
+  <div style="max-width:1060px;margin:0 auto;">
+    <div class="hero-proof-strip" style="display:flex;align-items:center;justify-content:center;gap:64px;">
+      <div class="animate-on-scroll" style="text-align:center;transition-delay:0s;">
+        <div style="font-size:30px;font-weight:900;color:#fff;letter-spacing:-0.02em;">11M+</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);font-weight:500;margin-top:4px;">Active users</div>
+      </div>
+      <div class="animate-on-scroll" style="text-align:center;transition-delay:0.1s;">
+        <div style="font-size:30px;font-weight:900;color:#fff;letter-spacing:-0.02em;">4.7&#9733;</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);font-weight:500;margin-top:4px;">17,000+ reviews</div>
+      </div>
+      <div class="animate-on-scroll" style="text-align:center;transition-delay:0.2s;">
+        <div style="font-size:30px;font-weight:900;color:#fff;letter-spacing:-0.02em;">100k+</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);font-weight:500;margin-top:4px;">Stores covered</div>
+      </div>
+      <div class="animate-on-scroll" style="text-align:center;transition-delay:0.3s;">
+        <div style="font-size:30px;font-weight:900;color:#fff;letter-spacing:-0.02em;">Free</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);font-weight:500;margin-top:4px;">Always</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== MORE PRICE EXAMPLES ========== -->
+<section class="section-pad" style="background:#f9fafb;padding:56px 48px;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+  <div style="max-width:760px;margin:0 auto;">
+    <p style="text-align:center;font-size:14px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#16a34a;margin-bottom:44px;">More real examples</p>
+    <div class="comparison-cards" style="display:flex;gap:28px;justify-content:center;">
+
+      <!-- Luggage -->
+      <div style="flex:1;max-width:400px;position:relative;background:#fff;border-radius:16px;border:1px solid #e5e7eb;padding:32px 36px 28px;box-shadow:0 1px 6px rgba(0,0,0,0.04);text-align:center;">
+        <div style="position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:#CC0C39;color:#fff;font-size:16px;font-weight:800;padding:6px 18px;border-radius:8px;white-space:nowrap;letter-spacing:-0.01em;">Save $28.02</div>
+        <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:24px;">
+          <div style="font-size:19px;font-weight:700;color:#111827;line-height:1.3;margin-top:10px;margin-bottom:14px;">Samsonite Carry-On Spinner</div>
+          <div style="width:180px;height:180px;background:#f9fafb;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+            <img src="images/luggage.avif" alt="Samsonite Carry-On Spinner" style="max-height:160px;max-width:160px;object-fit:contain;">
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:18px;">
+          <div style="text-align:center;">
+            <div style="font-size:14px;font-weight:600;color:#9ca3af;margin-bottom:4px;">Amazon</div>
+            <div style="font-size:26px;font-weight:800;color:#d1d5db;text-decoration:line-through;letter-spacing:-0.02em;">$307.09</div>
+          </div>
+          <div style="font-size:22px;color:#d1d5db;">&#8594;</div>
+          <div style="text-align:center;">
+            <div style="font-size:14px;font-weight:600;color:#6b7280;margin-bottom:4px;">Samsonite.com</div>
+            <div style="font-size:26px;font-weight:800;color:#111827;letter-spacing:-0.02em;">$279.07</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Crocs -->
+      <div style="flex:1;max-width:400px;position:relative;background:#fff;border-radius:16px;border:1px solid #e5e7eb;padding:32px 36px 28px;box-shadow:0 1px 6px rgba(0,0,0,0.04);text-align:center;">
+        <div style="position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:#CC0C39;color:#fff;font-size:16px;font-weight:800;padding:6px 18px;border-radius:8px;white-space:nowrap;letter-spacing:-0.01em;">Save $5.96</div>
+        <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:24px;">
+          <div style="font-size:19px;font-weight:700;color:#111827;line-height:1.3;margin-top:10px;margin-bottom:14px;">Classic Mary Jane Clog</div>
+          <div style="width:180px;height:180px;background:#f9fafb;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+            <img src="images/clog-white.png" alt="Crocs Classic Mary Jane Clog" style="max-height:160px;max-width:160px;object-fit:contain;">
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:18px;">
+          <div style="text-align:center;">
+            <div style="font-size:14px;font-weight:600;color:#9ca3af;margin-bottom:4px;">Amazon</div>
+            <div style="font-size:26px;font-weight:800;color:#d1d5db;text-decoration:line-through;letter-spacing:-0.02em;">$35.95</div>
+          </div>
+          <div style="font-size:22px;color:#d1d5db;">&#8594;</div>
+          <div style="text-align:center;">
+            <div style="font-size:14px;font-weight:600;color:#6b7280;margin-bottom:4px;">Crocs.com</div>
+            <div style="font-size:26px;font-weight:800;color:#111827;letter-spacing:-0.02em;">$29.99</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p style="text-align:center;font-size:13px;color:#9ca3af;margin-top:24px;">* Prices are illustrative examples. Actual savings vary by product and availability.</p>
+  </div>
+</section>
+
+<!-- ========== HOW IT WORKS ========== -->
+<section class="section-pad" style="background:#fff;padding:64px 48px;">
+  <div style="max-width:680px;margin:0 auto;">
+    <h2 class="section-h2" style="text-align:center;font-size:40px;font-weight:800;color:#111827;letter-spacing:-0.02em;margin-bottom:12px;">Here's how it works</h2>
+    <p style="text-align:center;font-size:18px;color:#6b7280;margin-bottom:48px;">Three steps. Then it runs on its own forever.</p>
+
+    <div style="display:flex;flex-direction:column;gap:36px;">
+
+      <!-- Step 1 -->
+      <div class="animate-on-scroll" style="display:flex;align-items:flex-start;gap:20px;transition-delay:0s;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;">1</div>
+        <div>
+          <h3 style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px;line-height:1.3;">Add it in seconds</h3>
+          <p style="font-size:17px;color:#4b5563;line-height:1.7;">One click to install. It's free and available on Chrome, Edge, or Safari.</p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="animate-on-scroll" style="display:flex;align-items:flex-start;gap:20px;transition-delay:0.15s;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;">2</div>
+        <div>
+          <h3 style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px;line-height:1.3;">Shop like normal</h3>
+          <p style="font-size:17px;color:#4b5563;line-height:1.7;">It runs quietly in the background at 100,000+ online stores.</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="animate-on-scroll" style="display:flex;align-items:flex-start;gap:20px;transition-delay:0.3s;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;">3</div>
+        <div>
+          <h3 style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px;line-height:1.3;">It does the work for you</h3>
+          <p style="font-size:17px;color:#4b5563;line-height:1.7;">Coupons apply automatically, lower prices appear, and cashback adds up.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Chrome Web Store Screenshot -->
+    <div style="margin-top:48px;text-align:center;max-width:900px;margin-left:50%;transform:translateX(-50%);width:900px;">
+      <p style="font-size:14px;color:#9ca3af;font-weight:600;margin-bottom:16px;">Here's what it looks like on the Chrome Web Store:</p>
+      <a class="btn" href="https://placeholder-affiliate-link.com" style="display:block;background:#f3f4f6;padding:8px;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+        <img src="images/chrome-store.png" alt="Capital One Shopping on Chrome Web Store" style="width:100%;display:block;border-radius:8px;">
+      </a>
+    </div>
+
+    <!-- CTA -->
+    <div style="text-align:center;margin-top:40px;">
+      <a class="btn" href="https://placeholder-affiliate-link.com">Get Started &mdash; It's Free</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STORES STRIP ========== -->
+<section class="section-pad" style="background:#f9fafb;padding:52px 48px;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+  <div style="max-width:1160px;margin:0 auto;">
+    <p style="text-align:center;font-size:14px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:32px;">Works at over 100,000 stores including</p>
+    <div class="stores-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+      <div style="background:#fff;border-radius:14px;padding:24px 16px;text-align:center;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;">
+        <img src="images/walmart.webp" alt="Walmart" style="max-height:40px;max-width:160px;object-fit:contain;">
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:24px 16px;text-align:center;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;">
+        <img src="images/target.webp" alt="Target" style="max-height:40px;max-width:160px;object-fit:contain;">
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:24px 16px;text-align:center;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;">
+        <img src="images/kohls.webp" alt="Kohl's" style="max-height:40px;max-width:160px;object-fit:contain;">
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:24px 16px;text-align:center;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;">
+        <img src="images/jcpenney.webp" alt="JCPenney" style="max-height:40px;max-width:160px;object-fit:contain;">
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:24px 16px;text-align:center;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;">
+        <img src="images/walgreens.webp" alt="Walgreens" style="max-height:40px;max-width:160px;object-fit:contain;">
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:24px 16px;text-align:center;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;">
+        <img src="images/michaels.webp" alt="Michaels" style="max-height:40px;max-width:160px;object-fit:contain;">
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:24px 16px;text-align:center;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;">
+        <img src="images/gnc.webp" alt="GNC" style="max-height:40px;max-width:160px;object-fit:contain;">
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:24px 16px;text-align:center;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;">
+        <img src="images/hobbylobby.webp" alt="Hobby Lobby" style="max-height:40px;max-width:160px;object-fit:contain;">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== REVIEWS ========== -->
+<section class="section-pad" style="background:#fff;padding:64px 48px;">
+  <div style="max-width:800px;margin:0 auto;">
+    <h2 class="section-h2" style="text-align:center;font-size:40px;font-weight:800;color:#111827;letter-spacing:-0.02em;margin-bottom:12px;">Real people, real savings</h2>
+    <div style="text-align:center;margin-bottom:40px;">
+      <span style="color:#f59e0b;font-size:24px;letter-spacing:2px;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+      <span style="font-size:17px;color:#6b7280;margin-left:10px;font-weight:500;">4.7 out of 5 &mdash; 17,200+ reviews</span>
+      <br>
+      <a class="btn" href="https://chromewebstore.google.com/detail/capital-one-shopping-save/nenlahapcbofgnanklpelkaejcehkggg/reviews?hl=en-US" style="font-size:14px;color:#9ca3af;font-weight:600;text-decoration:none;margin-top:6px;display:inline-block;background:none;padding:0;">See all reviews on Chrome Web Store</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px;">
+
+      <div class="review-card animate-on-scroll" style="background:#fff;border-radius:14px;padding:28px 32px;border:1px solid #e5e7eb;transition-delay:0s;" data-delay="0" data-threshold="0.1">
+        <p style="font-size:18px;color:#4b5563;line-height:1.8;margin-bottom:14px;">"I have received over $12k back from my usual shopping. This site provides my money back within 30 to 35 days without fail."</p>
+        <div style="font-weight:700;font-size:15px;color:#111827;">&mdash; Dawn Queally</div>
+      </div>
+
+      <div class="review-card animate-on-scroll" style="background:#fff;border-radius:14px;padding:28px 32px;border:1px solid #e5e7eb;transition-delay:0.15s;" data-delay="1" data-threshold="0.1">
+        <p style="font-size:18px;color:#4b5563;line-height:1.8;margin-bottom:14px;">"Just add the extension and forget about it. I have saved over $1,000 in the past 6 months without doing anything."</p>
+        <div style="font-weight:700;font-size:15px;color:#111827;">&mdash; C.D. Harbottle</div>
+      </div>
+
+      <div class="review-card animate-on-scroll" style="background:#fff;border-radius:14px;padding:28px 32px;border:1px solid #e5e7eb;transition-delay:0.3s;" data-delay="2" data-threshold="0.1">
+        <p style="font-size:18px;color:#4b5563;line-height:1.8;margin-bottom:14px;">"Capital One Shopping is worth it, I just literally just saved 60 dollars."</p>
+        <div style="font-weight:700;font-size:15px;color:#111827;">&mdash; Val Perez</div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:36px;">
+      <a class="btn" href="https://placeholder-affiliate-link.com" style="font-size:18px;padding:16px 44px;">Try It Yourself</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FAQ ========== -->
+<section class="section-pad" style="background:#f9fafb;padding:88px 48px;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+  <div style="max-width:760px;margin:0 auto;">
+    <h2 class="section-h2" style="text-align:center;font-size:40px;font-weight:800;color:#111827;letter-spacing:-0.02em;margin-bottom:52px;">Common questions</h2>
+
+    <div class="faq-item" style="border-bottom:1px solid #e5e7eb;padding:24px 0;cursor:pointer;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;">
+        <span style="font-size:18px;font-weight:600;color:#111827;line-height:1.4;">Is it really free?</span>
+        <span class="faq-toggle-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p style="margin:14px 0 0;color:#4b5563;font-size:17px;line-height:1.8;">Yes, completely. Capital One Shopping is free to use and always will be. No premium tier, no hidden fees, no credit card required. Capital One earns a small commission from merchants when it saves you money &mdash; so the better it works for you, the better it works for everyone.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" style="border-bottom:1px solid #e5e7eb;padding:24px 0;cursor:pointer;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;">
+        <span style="font-size:18px;font-weight:600;color:#111827;line-height:1.4;">Do I need a Capital One credit card or bank account?</span>
+        <span class="faq-toggle-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p style="margin:14px 0 0;color:#4b5563;font-size:17px;line-height:1.8;">No. Capital One Shopping works for anyone with a browser, regardless of what bank or credit cards you use. You don't need to be a Capital One customer at all.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" style="border-bottom:1px solid #e5e7eb;padding:24px 0;cursor:pointer;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;">
+        <span style="font-size:18px;font-weight:600;color:#111827;line-height:1.4;">Is my personal or financial data safe?</span>
+        <span class="faq-toggle-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p style="margin:14px 0 0;color:#4b5563;font-size:17px;line-height:1.8;">Yes. The extension only activates on retail and travel shopping sites. It does not access your banking information, passwords, or sensitive personal data. You can review the full privacy policy at any time and remove it in one click.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" style="border-bottom:1px solid #e5e7eb;padding:24px 0;cursor:pointer;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;">
+        <span style="font-size:18px;font-weight:600;color:#111827;line-height:1.4;">Does it work on travel sites like Expedia and VRBO?</span>
+        <span class="faq-toggle-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p style="margin:14px 0 0;color:#4b5563;font-size:17px;line-height:1.8;">Yes. It works on Expedia, VRBO, Priceline, Booking.com, IHG, Hilton, and many more travel sites where you can earn cashback on eligible purchases.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== FINAL CTA ========== -->
+<section style="background:linear-gradient(160deg,#052e16 0%,#14532d 100%);padding:88px 48px;text-align:center;">
+  <h2 class="final-h2" style="font-size:48px;font-weight:900;color:#fff;letter-spacing:-0.03em;line-height:1.15;max-width:640px;margin:0 auto 20px;">Join now for free and start saving today.</h2>
+  <p style="color:rgba(255,255,255,0.75);font-size:19px;line-height:1.7;max-width:520px;margin:0 auto 44px;font-weight:400;">11 million shoppers are already saving automatically. It takes 10 seconds to install and costs nothing.</p>
+  <a id="final-cta-btn" class="btn" href="https://placeholder-affiliate-link.com" style="font-size:20px;padding:20px 56px;background:#fff;color:#111827;" onmouseenter="this.style.background='#f9fafb'" onmouseleave="this.style.background='#fff'">Add to Browser &mdash; It's Free</a>
+  <p style="color:rgba(255,255,255,0.45);font-size:14px;margin-top:16px;">No credit card &middot; No Capital One account required &middot; Remove anytime</p>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer style="background:#0a0a0a;padding:28px 48px;">
+  <div class="footer-inner" style="display:flex;align-items:center;justify-content:space-between;max-width:1160px;margin:0 auto;">
+    <div style="display:flex;align-items:center;">
+      <img src="images/cos-logo.svg" alt="Capital One Shopping" style="height:24px;filter:brightness(0) invert(1);">
+    </div>
+    <p style="color:#6b7280;font-size:13px;">
+      &copy; 2026 Capital One Shopping. Savings may vary.
+      <a href="#" style="color:#9ca3af;text-decoration:underline;margin-left:4px;">Privacy Policy</a>
+      &middot;
+      <a href="#" style="color:#9ca3af;text-decoration:underline;">Terms of Service</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  // === Scroll animations (IntersectionObserver) ===
+  var animItems = document.querySelectorAll('.animate-on-scroll');
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05 });
+    animItems.forEach(function(el) { observer.observe(el); });
+  } else {
+    animItems.forEach(function(el) { el.classList.add('in-view'); });
+  }
+
+  // === Final CTA wiggle ===
+  var finalBtn = document.getElementById('final-cta-btn');
+  if (finalBtn && 'IntersectionObserver' in window) {
+    var wiggleObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          finalBtn.style.animation = 'wiggle 0.6s ease';
+          finalBtn.addEventListener('animationend', function() {
+            finalBtn.style.animation = '';
+          }, { once: true });
+          wiggleObserver.unobserve(finalBtn);
+        }
+      });
+    }, { threshold: 0.5 });
+    wiggleObserver.observe(finalBtn);
+  }
+
+  // === FAQ accordion ===
+  var faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(function(item) {
+    item.addEventListener('click', function() {
+      var isOpen = item.classList.contains('open');
+      faqItems.forEach(function(other) {
+        other.classList.remove('open');
+        var icon = other.querySelector('.faq-toggle-icon');
+        if (icon) icon.textContent = '+';
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        var icon = item.querySelector('.faq-toggle-icon');
+        if (icon) icon.textContent = '\u2212';
+      }
+    });
+  });
+
+  // === UTM parameter passthrough ===
+  var params = window.location.search;
+  if (params) {
+    var ctaLinks = document.querySelectorAll('.btn[href*="placeholder-affiliate-link"]');
+    ctaLinks.forEach(function(link) {
+      var base = link.href.split('?')[0];
+      link.href = base + params;
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
